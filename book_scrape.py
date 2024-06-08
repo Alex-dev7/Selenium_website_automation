@@ -14,6 +14,19 @@ driver = webdriver.Chrome(service=service)
 
 driver.get(web)
 
-time.sleep(10)
+products = driver.find_elements(by='xpath', value='//li[contains(@class, "productListItem")]')
+
+for product in products:
+    print(product.find_element(by='xpath', value='.//h3[contains(@class, "bc-heading")]').text)
+    product.find_element(by='xpath', value='.//li[contains(@class, "authorLabel")]').text
+    product.find_element(by='xpath', value='.//li[contains(@class, "runtimeLabel")]').text
+
+# time.sleep(10)
 
 driver.quit()
+
+# //li[contains(@class, "productListItem")]
+# //h3[contains(@class, "bc-heading")]
+# //li[contains(@class, "authorLabel")]
+# //li[contains(@class, "runtimeLabel")]
+
