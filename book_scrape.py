@@ -1,9 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+import pandas as pd
 import time
 
 
@@ -16,14 +13,28 @@ driver.get(web)
 
 products = driver.find_elements(by='xpath', value='//li[contains(@class, "productListItem")]')
 
+book_title = []
+book_author = []
+book_length = []
+
 for product in products:
-    print(product.find_element(by='xpath', value='.//h3[contains(@class, "bc-heading")]').text)
-    product.find_element(by='xpath', value='.//li[contains(@class, "authorLabel")]').text
-    product.find_element(by='xpath', value='.//li[contains(@class, "runtimeLabel")]').text
+    book_title.append(product.find_element(by='xpath', value='.//h3[contains(@class, "bc-heading")]').text)
+    book_author.append(product.find_element(by='xpath', value='.//li[contains(@class, "authorLabel")]').text)
+    book_length.append(product.find_element(by='xpath', value='.//li[contains(@class, "runtimeLabel")]').text)
 
 # time.sleep(10)
 
 driver.quit()
+
+# create a dataframe
+df_books  = pd.DataFrame({
+    'title': book_title,
+    'author': book_author,
+    'length': book_length
+})
+
+# save the dataframe to a csv file
+df_books.to_csv('books.csv', index=False)
 
 # //li[contains(@class, "productListItem")]
 # //h3[contains(@class, "bc-heading")]
